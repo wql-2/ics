@@ -1,0 +1,211 @@
+{
+  "date_user_timezone": "2026-10-16 Asia/Shanghai",
+  "python": "3.12.14",
+  "torch": "2.5.1+cpu",
+  "cuda_available": false,
+  "tests": "7 passed",
+  "genuine_qwen_teacher_run": false,
+  "accuracy_claim": false,
+  "baseline": {
+    "backend": "baseline",
+    "parameters": {
+      "detector": 3782693,
+      "region_image_encoder": 8276992,
+      "text_encoder_including_token_embeddings": 15169024,
+      "total": 27228710,
+      "image_path": 12059685
+    },
+    "vocabulary": [
+      "samoyed dog",
+      "cat",
+      "red backpack",
+      "bicycle helmet",
+      "watering can"
+    ],
+    "device": "cpu",
+    "timings_ms": [
+      2528.6283369999865
+    ],
+    "timing_scope": "image forward + crop preprocessing + similarity + NMS; excludes loading/text encoding/image disk IO",
+    "baseline_limit": "COCO-biased proposals plus dense windows; open vocabulary does not guarantee novel-object recall",
+    "threshold": 0.27,
+    "accuracy_benchmark": false
+  },
+  "nano_training": {
+    "architecture": "open-vocabulary-dfine-nano",
+    "parameters": 3796583,
+    "training_classes": [
+      "red rectangle",
+      "blue circle",
+      "green triangle"
+    ],
+    "training_images": 6,
+    "steps": 2,
+    "initialization": {
+      "loaded_tensors": 672,
+      "total_tensors": 674,
+      "loaded_elements": 3799074,
+      "missing_tensors": 2
+    },
+    "auxiliary_parameters": {
+      "auxiliary_visual": 8276992,
+      "text_encoder": 15169024
+    },
+    "history": [
+      {
+        "epoch": 0,
+        "step": 1,
+        "loss": 25.795488357543945,
+        "detection_loss": 23.833969116210938,
+        "semantic_loss": 0.9797483086585999,
+        "relation_loss": 0.002021500375121832,
+        "gradient_norm": 446.35772705078125
+      },
+      {
+        "epoch": 0,
+        "step": 2,
+        "loss": 23.292112350463867,
+        "detection_loss": 21.338825225830078,
+        "semantic_loss": 0.9753136038780212,
+        "relation_loss": 0.0026607897598296404,
+        "gradient_norm": 207.008544921875
+      }
+    ],
+    "accuracy_claim": "none: training smoke test is not an accuracy benchmark",
+    "device": "cpu",
+    "amp": false,
+    "seed": 42
+  },
+  "micro_training": {
+    "architecture": "open-vocabulary-dfine-micro",
+    "parameters": 2821490,
+    "training_classes": [
+      "red rectangle",
+      "blue circle",
+      "green triangle"
+    ],
+    "training_images": 6,
+    "steps": 1,
+    "initialization": {
+      "loaded_tensors": 374,
+      "total_tensors": 641,
+      "loaded_elements": 1866681,
+      "missing_tensors": 267
+    },
+    "auxiliary_parameters": {
+      "auxiliary_visual": 8276992,
+      "text_encoder": 15169024
+    },
+    "history": [
+      {
+        "epoch": 0,
+        "step": 1,
+        "loss": 17.2283992767334,
+        "detection_loss": 15.155189514160156,
+        "semantic_loss": 1.035438895225525,
+        "relation_loss": 0.0023324922658503056,
+        "gradient_norm": 7.107301235198975
+      }
+    ],
+    "accuracy_claim": "none: training smoke test is not an accuracy benchmark",
+    "device": "cpu",
+    "amp": false,
+    "seed": 42
+  },
+  "student_new_vocabulary": {
+    "backend": "student",
+    "parameters": {
+      "image_detector": 3796583,
+      "text_encoder_including_token_embeddings": 15169024,
+      "total_with_text_encoder": 18965607,
+      "note": "cached-vocabulary image inference loads only the detector; new words require text encoding"
+    },
+    "vocabulary": [
+      "samoyed dog",
+      "screwdriver",
+      "bicycle helmet",
+      "coffee grinder",
+      "red backpack"
+    ],
+    "device": "cpu",
+    "timings_ms": [
+      14.963094999984605
+    ],
+    "timing_scope": "image forward + crop preprocessing + similarity + NMS; excludes loading/text encoding/image disk IO",
+    "baseline_limit": "COCO-biased proposals plus dense windows; open vocabulary does not guarantee novel-object recall",
+    "threshold": 0.27,
+    "accuracy_benchmark": false
+  },
+  "synthetic_evaluation": {
+    "images": 3,
+    "iou": 0.5,
+    "score_threshold": 0.25,
+    "all": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 9,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "macro_class_recall": 0.0,
+      "supported_classes": 3
+    },
+    "base": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 9,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "macro_class_recall": 0.0,
+      "supported_classes": 3
+    },
+    "novel": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "macro_class_recall": null,
+      "supported_classes": 0
+    },
+    "per_class": {
+      "blue circle": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 3,
+        "support": 3
+      },
+      "green triangle": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 3,
+        "support": 3
+      },
+      "red rectangle": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 3,
+        "support": 3
+      }
+    },
+    "novel_definition": "absent from student detection training vocabulary; not necessarily absent from CLIP pretraining",
+    "annotation_requirement": "use independent human ground truth; teacher agreement is not accuracy",
+    "coco_ap": {
+      "available": true,
+      "max_detections": 100,
+      "note": "AP uses saved scores before evaluate --threshold; export low-threshold predictions for meaningful recall",
+      "all": {
+        "ap50_95": 0.0022442244224422443,
+        "ap50": 0.022442244224422446
+      },
+      "base": {
+        "ap50_95": 0.0022442244224422443,
+        "ap50": 0.022442244224422446
+      },
+      "novel": null
+    },
+    "train_eval_disjoint_by_sha256": true
+  }
+}
